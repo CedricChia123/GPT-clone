@@ -1,12 +1,12 @@
 from beanie import Document
-from datetime import datetime
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
+
 
 class DBConversation(Document):
     id: str
     name: str
     params: Optional[Dict[str, Any]] = {}
-    created_at: datetime = datetime.now() 
+    tokens: int = 0
 
     class Settings:
         name = "conversations"
@@ -15,4 +15,10 @@ class DBConversation(Document):
     class Config:
         arbitrary_types_allowed = True
         extra = "allow"
-        
+
+    @classmethod
+    async def get_all_conversations(cls) -> List["DBConversation"]:
+        """
+        Fetches all conversation records from the database.
+        """
+        return await cls.find_all().to_list()

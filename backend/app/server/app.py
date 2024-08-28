@@ -8,6 +8,7 @@ from .routes.conversations import router as Router
 app = FastAPI()
 app.include_router(Router, tags=["Conversations"], prefix="/conversations")
 
+
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     return JSONResponse(
@@ -16,13 +17,15 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
             code=400,
             message="Invalid Parameters Provided.",
             request={"method": request.method, "url": str(request.url)},
-            details={"errors": exc.errors()}
-        ).model_dump()
+            details={"errors": exc.errors()},
+        ).model_dump(),
     )
+
 
 @app.on_event("startup")
 async def start_db():
     await init_db()
+
 
 @app.on_event("shutdown")
 async def close_db():
