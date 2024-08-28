@@ -5,6 +5,8 @@ from ..schema.responses import (
     conversation_response,
     get_conversation_response,
     put_conversation_response,
+    get_one_conversation_response,
+    delete_conversation_response,
     APIError,
 )
 from ..models.conversations import DBConversation
@@ -13,6 +15,7 @@ from ..schema.conversation_schema import (
     Conversation,
     ConversationPUT,
     CreatedResponse,
+    ConversationFull,
 )
 
 router = APIRouter()
@@ -115,3 +118,78 @@ async def update_conversation(id: str, update_data: ConversationPUT = Body(...))
                     details={"error": str(e)},
                 ).model_dump(),
             )
+
+
+@router.get(
+    "/{id}",
+    response_model=ConversationFull,
+    status_code=status.HTTP_200_OK,
+    responses=get_one_conversation_response,
+    summary="Retrieves the Conversation History",
+)
+async def get_conversation(id: str):
+    """
+    Retrieves the entire conversation history with the LLM
+    """
+    conversation = await DBConversation.get(id)
+
+    if conversation:
+        return conversation
+
+    elif not conversation:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=APIError(
+                code=404,
+                message="Specified resource(s) not found.",
+                request=f"GET conversation {id} not found",
+                details={"error": f"{id} not found"},
+            ).model_dump(),
+        )
+
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=APIError(
+                code=500,
+                message="Internal Server Error.",
+                request=f"GET conversation {id} server error",
+                details={"error": str(e)},
+            ).model_dump(),
+        )
+
+
+@router.delete(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=delete_conversation_response,
+    summary="Deletes the Conversation",
+)
+async def delete_conversation(id: str):
+    """
+    Deletes the entire conversation history with the LLM Model
+    """
+    conversation = await DBConversation.get(id)
+    if not conversation:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=APIError(
+                code=404,
+                message="Specified resource not found.",
+                request=f"DELETE conversation {id} not found",
+                details={"error": f"{id} not found"},
+            ).model_dump(),
+        )
+
+    try:
+        await DBConversation.delete(id)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=APIError(
+                code=500,
+                message="Internal Server Error.",
+                request=f"DELETE conversation {id} server error",
+                details={"error": str(e)},
+            ).model_dump(),
+        )

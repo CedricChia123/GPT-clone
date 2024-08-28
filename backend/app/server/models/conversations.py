@@ -1,5 +1,6 @@
 from beanie import Document
 from typing import Dict, Any, Optional, List
+from ..schema.conversation_schema import Prompt
 
 
 class DBConversation(Document):
@@ -7,6 +8,7 @@ class DBConversation(Document):
     name: str
     params: Optional[Dict[str, Any]] = {}
     tokens: int = 0
+    messages: List[Prompt] = []
 
     class Settings:
         name = "conversations"
@@ -29,3 +31,10 @@ class DBConversation(Document):
         Fetches a single conversation record from the database by its ID.
         """
         return await cls.find_one(cls.id == conversation_id)
+
+    @classmethod
+    async def delete(cls, conversation_id: str) -> bool:
+        """
+        Deletes a single conversation record from the database by its ID.
+        """
+        await cls.find_one(cls.id == conversation_id).delete()

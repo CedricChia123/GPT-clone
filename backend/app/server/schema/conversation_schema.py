@@ -1,6 +1,6 @@
+from enum import Enum
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from datetime import datetime
 
 
 class Params(BaseModel):
@@ -34,3 +34,22 @@ class Conversation(BaseModel):
 class ConversationPUT(BaseModel):
     name: Optional[str] = None
     params: Optional[Params] = None
+
+
+class QueryRoleType(Enum):
+    system = "system"
+    user = "user"
+    assistant = "assistant"
+    function = "function"
+
+
+class Prompt(BaseModel):
+    role: QueryRoleType = Field(...)
+    content: str
+
+
+class ConversationFull(Conversation):
+    messages: List[Prompt]
+
+    class Config:
+        extra = "allow"

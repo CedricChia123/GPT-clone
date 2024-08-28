@@ -115,3 +115,77 @@ put_conversation_response = {
         "model": APIError,
     },
 }
+
+get_one_conversation_response = {
+    200: {
+        "description": "Successfully retrieved a Conversation.",
+        "content": {
+            "application/json": {
+                "example": {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "name": "string",
+                    "params": {"additionalProp1": {}},
+                    "tokens": 0,
+                    "messages": [
+                        {"role": "system", "content": "string", "additionalProp1": {}}
+                    ],
+                    "additionalProp1": {},
+                }
+            }
+        },
+    },
+    404: {
+        "description": "Specified resource(s) was not found",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 404,
+                    "message": "Specified resource(s) was not found",
+                }
+            }
+        },
+        "model": APIError,
+    },
+    500: {
+        "description": "Internal Server Error",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 500,
+                    "message": "Internal Server Error",
+                }
+            }
+        },
+        "model": APIError,
+    },
+}
+
+delete_conversation_response = {
+    204: {
+        "description": "Successfully deleted specified resource(s)",
+    },
+    404: {
+        "description": "Specified resource(s) was not found",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 404,
+                    "message": "Specified resource(s) was not found",
+                }
+            }
+        },
+        "model": APIError,
+    },
+    500: {
+        "description": "Internal Server Error",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 500,
+                    "message": "Internal Server Error",
+                }
+            }
+        },
+        "model": APIError,
+    },
+}
