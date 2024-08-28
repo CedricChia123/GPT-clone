@@ -22,3 +22,10 @@ class DBConversation(Document):
         Fetches all conversation records from the database.
         """
         return await cls.find_all().to_list()
+
+    @classmethod
+    async def get(cls, conversation_id: str) -> Optional["DBConversation"]:
+        """
+        Fetches a single conversation record from the database by its ID.
+        """
+        return await cls.find_one(cls.id == conversation_id)

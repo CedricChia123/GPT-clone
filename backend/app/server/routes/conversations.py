@@ -1,13 +1,19 @@
 from typing import List
 import uuid
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, Body, HTTPException, status
 from ..schema.responses import (
     conversation_response,
     get_conversation_response,
+    put_conversation_response,
     APIError,
 )
 from ..models.conversations import DBConversation
-from ..schema.conversation_schema import ConversationPOST, Conversation, CreatedResponse
+from ..schema.conversation_schema import (
+    ConversationPOST,
+    Conversation,
+    ConversationPUT,
+    CreatedResponse,
+)
 
 router = APIRouter()
 
@@ -60,5 +66,52 @@ async def get_conversations():
         return conversations
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+            status_code=status.HTTP_500_BAD_REQUEST,
+            detail=APIError(
+                code=500,
+                message="Internal server error",
+                details={"error": str(e)},
+            ).model_dump(),
         )
+
+
+@router.put(
+    "/{id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses=put_conversation_response,
+    summary="Updates the LLM properties of a Conversations",
+)
+async def update_conversation(id: str, update_data: ConversationPUT = Body(...)):
+    """
+    Allows the user to customise parameters and properties of a Conversation, thereby customising their experience.
+    """
+    conversation = await DBConversation.get(id)
+
+    if not conversation:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=APIError(
+                code=404,
+                message="Specified resource(s) not found.",
+                request=update_data.model_dump(),
+                details={"error": f"{id} not found"},
+            ).model_dump(),
+        )
+
+    else:
+        try:
+            update_data_dict = update_data.model_dump(exclude_unset=True)
+            for key, value in update_data_dict.items():
+                setattr(conversation, key, value)
+            await conversation.save()
+            return "Successfully updated specified resource"
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=APIError(
+                    code=500,
+                    message="Internal Server Error.",
+                    request=update_data.model_dump(),
+                    details={"error": str(e)},
+                ).model_dump(),
+            )

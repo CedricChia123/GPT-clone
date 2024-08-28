@@ -35,7 +35,7 @@ conversation_response = {
         "model": APIError,
     },
     500: {
-        "description": "Invalid parameter(s) provided.",
+        "description": "Internal Server Error.",
         "content": {
             "application/json": {
                 "example": {
@@ -64,10 +64,52 @@ get_conversation_response = {
         },
     },
     500: {
-        "description": "Invalid parameter(s) provided.",
+        "description": "Internal Server Error.",
         "content": {
             "application/json": {
                 "example": {"code": 500, "message": "Internal Server Error"}
+            }
+        },
+        "model": APIError,
+    },
+}
+
+put_conversation_response = {
+    204: {
+        "description": "Successfully updated specified resource",
+    },
+    400: {
+        "description": "Invalid parameter(s)",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 400,
+                    "message": "Invalid parameters provided",
+                }
+            }
+        },
+        "model": APIError,
+    },
+    404: {
+        "description": "Specified resource(s) was not found",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 404,
+                    "message": "Specified resource(s) was not found",
+                }
+            }
+        },
+        "model": APIError,
+    },
+    500: {
+        "description": "Internal Server Error",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 500,
+                    "message": "Internal Server Error",
+                }
             }
         },
         "model": APIError,

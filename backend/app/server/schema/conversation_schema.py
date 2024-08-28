@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 
 
@@ -29,3 +29,8 @@ class Conversation(BaseModel):
 
     class Config:
         extra = "allow"
+
+
+class ConversationPUT(BaseModel):
+    name: Optional[str] = None
+    params: Optional[Params] = None
