@@ -154,7 +154,7 @@ async def get_conversation(id: str):
                 code=500,
                 message="Internal Server Error.",
                 request=f"GET conversation {id} server error",
-                details={"error": str(e)},
+                details={"error": "Server Error"},
             ).model_dump(),
         )
 
