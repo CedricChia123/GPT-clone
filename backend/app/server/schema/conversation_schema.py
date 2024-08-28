@@ -44,7 +44,7 @@ class QueryRoleType(Enum):
 
 
 class Prompt(BaseModel):
-    role: QueryRoleType = Field(...)
+    role: QueryRoleType = "user"
     content: str
 
 

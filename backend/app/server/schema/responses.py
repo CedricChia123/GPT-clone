@@ -164,6 +164,18 @@ delete_conversation_response = {
     204: {
         "description": "Successfully deleted specified resource(s)",
     },
+    400: {
+        "description": "Invalid parameter(s)",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 400,
+                    "message": "Invalid parameters provided",
+                }
+            }
+        },
+        "model": APIError,
+    },
     404: {
         "description": "Specified resource(s) was not found",
         "content": {
@@ -172,6 +184,54 @@ delete_conversation_response = {
                     "code": 404,
                     "message": "Specified resource(s) was not found",
                 }
+            }
+        },
+        "model": APIError,
+    },
+    500: {
+        "description": "Internal Server Error",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 500,
+                    "message": "Internal Server Error",
+                }
+            }
+        },
+        "model": APIError,
+    },
+}
+
+query_response = {
+    201: {
+        "description": "Successfully created resource with ID",
+    },
+    400: {
+        "description": "Invalid parameters provided",
+        "content": {
+            "application/json": {
+                "example": {"code": 400, "message": "Invalid parameters provided"}
+            }
+        },
+        "model": APIError,
+    },
+    404: {
+        "description": "Specified resource(s) was not found",
+        "content": {
+            "application/json": {
+                "example": {
+                    "code": 404,
+                    "message": "Specified resource(s) was not found",
+                }
+            }
+        },
+        "model": APIError,
+    },
+    422: {
+        "description": "Unable to create resource due to errors",
+        "content": {
+            "application/json": {
+                "example": {"code": 422, "message": "Unable to create resource"}
             }
         },
         "model": APIError,

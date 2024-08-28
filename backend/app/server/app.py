@@ -3,10 +3,12 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from server.schema.responses import APIError
 from .database import init_db, off_db
-from .routes.conversations import router as Router
+from .routes.conversations import router as ConversationRouter
+from .routes.queries import router as QueryRouter
 
 app = FastAPI()
-app.include_router(Router, tags=["Conversations"], prefix="/conversations")
+app.include_router(ConversationRouter, tags=["Conversations"], prefix="/conversations")
+app.include_router(QueryRouter, tags=["LLM Queries"], prefix="/queries")
 
 
 @app.exception_handler(RequestValidationError)

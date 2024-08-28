@@ -1,6 +1,10 @@
+from fastapi import HTTPException, status
 from openai import OpenAI
 from os import getenv
 from dotenv import load_dotenv
+
+from .schema.responses import APIError
+from .schema.conversation_schema import Prompt
 
 import os
 
@@ -18,16 +22,21 @@ else:
     )
 
 
-def get_openai_response(prompt):
-    try:
-        chat_completion = client.chat.completions.create(
-            messages=[{"role": "user", "content": prompt}], model="gpt-3.5-turbo"
-        )
-        response_text = (
-            chat_completion.choices[0].message["content"]
-            if chat_completion.choices
-            else "No response generated."
-        )
-        return response_text
-    except Exception as e:
-        raise Exception(f"Failed to get response from OpenAI: {e}")
+def prompt_to_dict(prompt):
+    return {"role": prompt.role.value, "content": prompt.content}
+
+
+def get_openai_response(prompt, context=None):
+    messages = []
+    if context:
+        messages.extend([prompt_to_dict(item) for item in context])
+    messages.append(prompt)
+    chat_completion = client.chat.completions.create(
+        messages=messages, model="gpt-3.5-turbo"
+    )
+    response_text = (
+        chat_completion.choices[0].message.content
+        if chat_completion.choices and chat_completion.choices[0].message
+        else "No response generated."
+    )
+    return Prompt(role="assistant", content=response_text)
