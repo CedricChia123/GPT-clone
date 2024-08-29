@@ -34,7 +34,9 @@ async def create_prompt(id: str, prompt: Prompt):
     request_data = {"role": prompt.role.value, "content": prompt.content}
 
     try:
-        data = get_openai_response(request_data, conversation.messages, conversation.params)
+        data = get_openai_response(
+            request_data, conversation.messages, conversation.params
+        )
         response_data = data["response"]
         tokens_used = data["tokens_used"]
 
@@ -63,6 +65,6 @@ async def create_prompt(id: str, prompt: Prompt):
                 code=500,
                 message="Internal Server Error.",
                 details=f"{e}",
-                request="Server Error"
+                request="Server Error",
             ).model_dump(),
         )

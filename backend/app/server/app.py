@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from server.schema.responses import APIError
+from .schema.responses import APIError
 from .database import init_db, off_db
 from .routes.conversations import router as ConversationRouter
 from .routes.queries import router as QueryRouter

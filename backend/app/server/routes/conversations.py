@@ -43,7 +43,7 @@ async def create_conversation(conversation_request: ConversationPOST):
         return CreatedResponse(id=conversation_id)
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=APIError(
                 code=500,
                 message="Internal Server Error.",
@@ -69,7 +69,7 @@ async def get_conversations():
         return conversations
     except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_500_BAD_REQUEST,
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=APIError(
                 code=500,
                 message="Internal server error",

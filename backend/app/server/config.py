@@ -41,5 +41,5 @@ def get_openai_response(prompt, context=None, params=None):
     tokens_used = chat_completion.usage.total_tokens
     return {
         "response": Prompt(role="assistant", content=response_text),
-        "tokens_used": tokens_used
+        "tokens_used": tokens_used,
     }
