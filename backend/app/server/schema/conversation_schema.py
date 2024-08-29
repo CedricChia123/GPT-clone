@@ -20,6 +20,9 @@ class ConversationPOST(BaseModel):
 class CreatedResponse(BaseModel):
     id: str
 
+    class Config:
+        extra = "allow"
+
 
 class Conversation(BaseModel):
     id: str

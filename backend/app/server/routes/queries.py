@@ -1,6 +1,4 @@
-from typing import List
-import uuid
-from fastapi import APIRouter, Body, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from ..schema.responses import (
     query_response,
     APIError,
@@ -36,7 +34,9 @@ async def create_prompt(id: str, prompt: Prompt):
     request_data = {"role": prompt.role.value, "content": prompt.content}
 
     try:
-        response_data = get_openai_response(request_data, conversation.messages)
+        data = get_openai_response(request_data, conversation.messages, conversation.params)
+        response_data = data["response"]
+        tokens_used = data["tokens_used"]
 
     except Exception as e:
         raise HTTPException(
@@ -50,13 +50,11 @@ async def create_prompt(id: str, prompt: Prompt):
     try:
         conversation.messages.append(prompt)
         conversation.messages.append(response_data)
-        prompt_token_count = len(prompt.content)
-        response_token_count = len(response_data.content)
-        conversation.tokens += prompt_token_count + response_token_count
+        conversation.tokens = tokens_used
 
         await conversation.save()
 
-        return CreatedResponse(id=id)
+        return CreatedResponse(id=id, response=response_data.content)
 
     except Exception as e:
         raise HTTPException(
@@ -64,5 +62,7 @@ async def create_prompt(id: str, prompt: Prompt):
             detail=APIError(
                 code=500,
                 message="Internal Server Error.",
+                details=f"{e}",
+                request="Server Error"
             ).model_dump(),
         )
