@@ -13,7 +13,7 @@ OPENAI_API_KEY = getenv("OPENAI_API_KEY")
 
 if OPENAI_API_KEY:
     client = OpenAI(
-        api_key=os.environ.get("OPENAI_API_KEY"),
+        api_key=getenv("OPENAI_API_KEY"),
     )
 else:
     raise ValueError(
