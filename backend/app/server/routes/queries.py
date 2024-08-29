@@ -46,6 +46,7 @@ async def create_prompt(id: str, prompt: Prompt):
             detail=APIError(
                 code=422,
                 message="Unable to create resource.",
+                details=f"str{e}"
             ).model_dump(),
         )
 
