@@ -19,12 +19,12 @@ const Home: React.FC = () => {
       className="p-4"
       style={{
         display: "flex",
-        height: "100vh",
-        width: "100vw",
+        height: "100%",
+        width: "100%",
         justifyContent: "center",
       }}
     >
-      <div style={{ width: "25%" }}>
+      <div style={{ width: "35%" }}>
         <ConversationList onSelectConversation={handleSelectConversation} />
       </div>
       <div style={{ width: "75%" }}>
