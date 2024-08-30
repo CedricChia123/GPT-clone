@@ -18,7 +18,7 @@ OPENAI_API_KEY="YOUR_OPENAI_SECRET_KEY"
 
 This backend is designed to run with Docker Compose, which sets up two containers:
 
-1. **MongoDB** running on `localhost:27017`
+1. **MongoDB** running on `localhost:27018`
 2. **Backend API** running on `localhost:8000`
 
 To run the backend with Docker, use the following command:
@@ -28,13 +28,6 @@ docker-compose up --build -d
 ```
 
 This command will build the Docker images and start the containers in detached mode.
-
-You can also run the backend locally by running the commands:
-
-```bash
-cd app
-python main.py
-```
 
 ### Accessing the API
 

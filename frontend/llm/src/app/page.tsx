@@ -1,9 +1,37 @@
-import { Button } from "@mantine/core";
+"use client";
 
-export default function Home() {
+import React, { useState } from "react";
+import { Container } from "@mantine/core";
+import ConversationList from "@/components/conversationlist";
+import ChatTab from "@/components/chattab";
+
+const Home: React.FC = () => {
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    string | null
+  >(null);
+
+  const handleSelectConversation = (conversationId: string): void => {
+    setSelectedConversationId(conversationId);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Button variant="filled">Test Mantine Button</Button>
-    </main>
+    <Container
+      className="p-4"
+      style={{
+        display: "flex",
+        height: "100vh",
+        width: "100vw",
+        justifyContent: "center",
+      }}
+    >
+      <div style={{ width: "25%" }}>
+        <ConversationList onSelectConversation={handleSelectConversation} />
+      </div>
+      <div style={{ width: "75%" }}>
+        <ChatTab conversationId={selectedConversationId} />
+      </div>
+    </Container>
   );
-}
+};
+
+export default Home;

@@ -5,8 +5,21 @@ from .schema.responses import APIError
 from .database import init_db, off_db
 from .routes.conversations import router as ConversationRouter
 from .routes.queries import router as QueryRouter
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"], 
+)
 app.include_router(ConversationRouter, tags=["Conversations"], prefix="/conversations")
 app.include_router(QueryRouter, tags=["LLM Queries"], prefix="/queries")
 
