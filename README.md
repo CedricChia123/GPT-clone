@@ -44,3 +44,30 @@ To run the tests with no warnings, run the command:
 ```bash
 pytest -p no:warnings
 ```
+
+## Task 2 Frontend
+
+First, navigate to the frontend folder with the command:
+
+```bash
+cd frontend
+cd llm
+```
+
+### Getting Started
+
+You need to create a .env file in this folder:
+
+```bash
+NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
+```
+
+If you are integrating the backend from earlier. Ensure that the backend containers are running.
+
+Run the command to install all dependencies:
+
+```bash
+npm install
+```
+
+![Main Page](/frontend/MainPage-Frontend.png)
