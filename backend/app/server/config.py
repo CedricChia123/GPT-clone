@@ -2,7 +2,6 @@ from openai import OpenAI
 from os import getenv
 from dotenv import load_dotenv
 
-from .schema.responses import APIError
 from .schema.conversation_schema import Prompt
 
 import os
