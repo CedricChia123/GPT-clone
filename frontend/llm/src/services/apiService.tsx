@@ -78,3 +78,46 @@ export const createConversation = async (
 
   return res.json();
 };
+
+export const updateConversation = async (
+  id: string,
+  payload: CreateConversationPayload
+) => {
+  const { name, temperature, max_tokens } = payload;
+
+  const params: { temperature?: number; max_tokens?: number } = {};
+  if (temperature !== undefined) {
+    params.temperature = temperature;
+  }
+  if (max_tokens !== undefined) {
+    params.max_tokens = max_tokens;
+  }
+
+  const res = await fetch(`${BASE_URL}/conversations/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      params: Object.keys(params).length ? params : {},
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Network response was not ok");
+  }
+};
+
+export const deleteConversation = async (id: string) => {
+  const res = await fetch(`${BASE_URL}/conversations/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Network response was not ok");
+  }
+};

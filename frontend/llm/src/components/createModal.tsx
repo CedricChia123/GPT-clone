@@ -44,6 +44,11 @@ const CreateModal: React.FC<CreateModalProps> = ({ opened, onClose }) => {
     try {
       await createConversation(payload);
       queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      setIncludeMaxTokens(false);
+      setIncludeTemperature(false);
+      setMaxTokens(null);
+      setTemperature(null);
+      setName("");
       onClose();
     } catch (error) {
       console.error("Error creating conversation:", error);

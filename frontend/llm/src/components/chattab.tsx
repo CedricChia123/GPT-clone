@@ -4,18 +4,24 @@ import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { TextInput, Button, Paper, Text, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { getOneConversation, postQuery } from "@/services/apiService";
-import { ConversationMessage, Message, Conversation } from "@/types/types";
-import { IconArrowRight } from "@tabler/icons-react";
+import { ConversationMessage, Message } from "@/types/types";
+import { IconArrowRight, IconSettings } from "@tabler/icons-react";
+import ConfigureModal from "./configureModal";
 
 interface ChatTabProps {
   conversationId: string | null;
+  onConversationDeleted: () => void;
 }
 
-export default function ChatTab({ conversationId }: ChatTabProps) {
+export default function ChatTab({
+  conversationId,
+  onConversationDeleted,
+}: ChatTabProps) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSending, setIsSending] = useState(false);
   const endOfMessagesRef = useRef<null | HTMLDivElement>(null);
+  const [openConfigureModal, setOpenConfigureModal] = useState(false);
 
   const {
     data: conversation,
@@ -39,6 +45,8 @@ export default function ChatTab({ conversationId }: ChatTabProps) {
       setMessages([]);
     }
   }, [conversation]);
+
+  const handleConfigure = () => setOpenConfigureModal(true);
 
   const handleSend = async () => {
     if (input.trim() === "" || !conversationId || isSending) return;
@@ -78,6 +86,8 @@ export default function ChatTab({ conversationId }: ChatTabProps) {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]);
 
+  const closeConfigureModal = () => setOpenConfigureModal(false);
+
   return (
     <div style={{ position: "fixed", bottom: 10, width: "50%" }}>
       <Paper
@@ -115,14 +125,34 @@ export default function ChatTab({ conversationId }: ChatTabProps) {
         />
         <Button
           variant="filled"
+          onClick={handleConfigure}
+          color="yellow"
+          style={{ marginLeft: "8px" }}
+          disabled={!conversationId}
+        >
+          <IconSettings size={16} />
+        </Button>
+        <Button
+          variant="filled"
           onClick={handleSend}
           color="blue"
           style={{ marginLeft: "8px" }}
-          disabled={isSending}
+          disabled={isSending || !conversationId}
         >
           <IconArrowRight size={16} />
         </Button>
       </div>
+      {conversationId && (
+        <ConfigureModal
+          conversationId={conversationId}
+          opened={openConfigureModal}
+          onClose={closeConfigureModal}
+          initialName={conversation?.name ?? ""}
+          initialTemperature={conversation?.params?.temperature}
+          initialMaxTokens={conversation?.params?.max_tokens}
+          onConversationDeleted={onConversationDeleted}
+        />
+      )}
     </div>
   );
 }

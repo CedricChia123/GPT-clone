@@ -43,9 +43,10 @@ const ConversationList: React.FC<ConversationListProps> = ({
           onClick={() => setOpenModal(true)}
           style={{
             cursor: "pointer",
-            width: "25ch",
+            width: "35ch",
             marginBottom: "1ch",
             marginTop: "1ch",
+            marginRight: "10ch",
           }}
           variant="filled"
         >
@@ -55,7 +56,12 @@ const ConversationList: React.FC<ConversationListProps> = ({
           <Button
             key={conversation.id}
             className="p-2"
-            style={{ cursor: "pointer", width: "25ch", marginBottom: "1ch" }}
+            style={{
+              cursor: "pointer",
+              width: "35ch",
+              marginRight: "10ch",
+              marginBottom: "1ch",
+            }}
             onClick={() => handleSelectConversation(conversation.id)}
             variant={
               selectedConversationId === conversation.id ? "light" : "outline"

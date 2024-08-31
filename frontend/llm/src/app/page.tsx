@@ -14,6 +14,10 @@ const Home: React.FC = () => {
     setSelectedConversationId(conversationId);
   };
 
+  const handleConversationDeleted = (): void => {
+    setSelectedConversationId(null);
+  };
+
   return (
     <Container
       className="p-4"
@@ -28,7 +32,10 @@ const Home: React.FC = () => {
         <ConversationList onSelectConversation={handleSelectConversation} />
       </div>
       <div style={{ width: "75%" }}>
-        <ChatTab conversationId={selectedConversationId} />
+        <ChatTab
+          conversationId={selectedConversationId}
+          onConversationDeleted={handleConversationDeleted}
+        />
       </div>
     </Container>
   );
