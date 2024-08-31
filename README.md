@@ -70,4 +70,5 @@ Run the command to install all dependencies:
 npm install
 ```
 
+Main Page:
 ![Main Page](/frontend/MainPage-Frontend.png)
