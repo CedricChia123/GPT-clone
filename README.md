@@ -70,5 +70,13 @@ Run the command to install all dependencies:
 npm install
 ```
 
+### Running the web app
+
+Once the dependencies are installed, run the following command:
+
+```bash
+npm run dev
+```
+
 Main Page:
 ![Main Page](/frontend/MainPage-Frontend.png)
