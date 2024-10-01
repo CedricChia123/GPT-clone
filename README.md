@@ -1,3 +1,9 @@
+## Technology Stack
+This project is built using the following technology
+Backend: FastAPI
+Database: MongoDB
+Frontend: Nextjs, Mantine
+
 ## Backend
 
 First, navigate to the backend folder with the command:
