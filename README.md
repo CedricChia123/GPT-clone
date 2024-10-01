@@ -1,6 +1,4 @@
-# GovTech Assignment
-
-## Task 1 Backend
+## Backend
 
 First, navigate to the backend folder with the command:
 
@@ -45,7 +43,7 @@ To run the tests with no warnings, run the command:
 pytest -p no:warnings
 ```
 
-## Task 2 Frontend
+## Frontend
 
 First, navigate to the frontend folder with the command:
 
